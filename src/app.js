@@ -19,7 +19,20 @@ const app = express();
 
 // Security middlewares
 app.use(helmet());
-app.use(cors({ origin: env.cors.origin }));
+const allowedOrigins = env.cors.origin
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`CORS blocked: ${origin}`));
+  }
+}));
 
 // Rate limiting (API Quality)
 const limiter = rateLimit({

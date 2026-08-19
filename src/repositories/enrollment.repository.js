@@ -59,7 +59,7 @@ export const countMembersByCourseId = async (courseId) => {
 
 export const findEnrolledCoursesByUserId = async (userId, { limit, offset }) => {
   const [rows] = await pool.execute(
-    `SELECT c.id, c.title, c.slug, c.thumbnail, c.status, c.created_at,
+    `SELECT c.id, c.title, c.slug, c.thumbnail, c.description, c.status, c.created_at,
             u.name as trainer_name, cm.status as enrollment_status, cm.joined_at
      FROM course_members cm
      JOIN courses c ON cm.course_id = c.id
