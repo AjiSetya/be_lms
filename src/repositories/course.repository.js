@@ -26,7 +26,7 @@ export const findCourseBySlug = async (slug) => {
 };
 
 export const findAllCourses = async ({ limit, offset, search, status = 'published' }) => {
-  let query = 'SELECT c.id, c.title, c.slug, c.thumbnail, c.status, c.created_at, u.name as trainer_name FROM courses c JOIN users u ON c.trainer_id = u.id WHERE c.status = ?';
+  let query = 'SELECT c.id, c.title, c.slug, c.thumbnail, c.description, c.status, c.created_at, u.name as trainer_name FROM courses c JOIN users u ON c.trainer_id = u.id WHERE c.status = ?';
   const queryParams = [status];
 
   if (search) {
