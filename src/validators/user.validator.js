@@ -13,7 +13,24 @@ export const updateProfileValidator = [
     .notEmpty()
     .withMessage('Email cannot be empty')
     .isEmail()
-    .withMessage('Must be a valid email address')
+    .withMessage('Must be a valid email address'),
+    
+  body('password')
+    .optional()
+    .notEmpty()
+    .withMessage('Password cannot be empty')
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters long'),
+
+  body('role')
+    .optional()
+    .isIn(['user', 'trainer'])
+    .withMessage('Role must be user or trainer'),
+
+  body('profilePhoto')
+    .optional({ nullable: true })
+    .isURL()
+    .withMessage('Profile photo must be a valid URL')
 ];
 
 export const updateStatusValidator = [

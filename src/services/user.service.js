@@ -1,5 +1,6 @@
 import * as userRepository from '../repositories/user.repository.js';
 import { AppError } from '../utils/AppError.js';
+import { hashPassword } from '../utils/password.js';
 
 export const getUsers = async ({ page = 1, limit = 10, search = '' }) => {
   const parsedPage = parseInt(page, 10) || 1;
@@ -50,15 +51,20 @@ export const updateProfile = async (id, updateData) => {
 
   const finalUpdateData = {
     name: updateData.name || user.name,
-    email: updateData.email || user.email
+    email: updateData.email || user.email,
+    role: updateData.role || user.role,
+    password_hash: updateData.password ? await hashPassword(updateData.password) : user.password_hash,
+    profile_photo: updateData.profilePhoto !== undefined ? updateData.profilePhoto : user.profile_photo
   };
 
   await userRepository.updateUser(id, finalUpdateData);
   
   return {
     id,
-    ...finalUpdateData,
-    role: user.role
+    name: finalUpdateData.name,
+    email: finalUpdateData.email,
+    role: finalUpdateData.role,
+    profilePhoto: finalUpdateData.profile_photo
   };
 };
 

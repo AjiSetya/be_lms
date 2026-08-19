@@ -33,7 +33,7 @@ export const createUser = async (userData) => {
 };
 
 export const findAllUsers = async ({ limit, offset, search }) => {
-  let query = 'SELECT id, name, email, role, is_active, created_at, updated_at FROM users';
+  let query = 'SELECT id, name, email, role, profile_photo, is_active, created_at, updated_at FROM users';
   const queryParams = [];
 
   if (search) {
@@ -62,10 +62,10 @@ export const countUsers = async (search) => {
 };
 
 export const updateUser = async (id, updateData) => {
-  const { name, email } = updateData;
+  const { name, email, role, password_hash, profile_photo } = updateData;
   await pool.execute(
-    'UPDATE users SET name = ?, email = ?, updated_at = NOW() WHERE id = ?',
-    [name, email, id]
+    'UPDATE users SET name = ?, email = ?, role = ?, password_hash = ?, profile_photo = ?, updated_at = NOW() WHERE id = ?',
+    [name, email, role, password_hash, profile_photo, id]
   );
 };
 
